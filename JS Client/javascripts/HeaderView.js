@@ -14,13 +14,24 @@
 
     HeaderView.prototype.tagName = "nav";
 
+    HeaderView.prototype.events = {
+      "change #remotes": "onRemoteChanged"
+    };
+
     HeaderView.prototype.initialize = function() {
       var _this = this;
-      this.$el.append('<select id="remotes"><option value="">-- no applications detected yet --</option></select>');
+      this.$el.append('<select id="remotes"><option value="oi">-- no applications detected yet --</option></select>');
       return this.model.remotes.on("add", function(remote) {
         _this.$el.find('select#remotes').append('<option value="' + remote.cid + '">' + remote.get('ip') + '</option>');
         return _this.$el.find('select#remotes option:first').text('-- ' + _this.model.remotes.length + ' application(s) detected --');
       });
+    };
+
+    HeaderView.prototype.onRemoteChanged = function(event) {
+      var remote;
+      if (remote = this.model.remotes.get(this.$el.find('select#remotes').val())) {
+        return this.trigger("remoteChanged", remote);
+      }
     };
 
     return HeaderView;
