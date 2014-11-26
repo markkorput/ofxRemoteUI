@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <title>jsRemoteUIClient</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=no">
+    <meta name="description" content="Just goofin' around">
+    <meta name="keywords" content="Two.js,Mark van de Korput,JavaScript">
+    <meta name="author" content="Mark van de Korput">
+    <script src="javascripts/jquery.js"></script>
+    <script src="javascripts/underscore.js"></script>
+    <script src="javascripts/backbone.js"></script>
+
+    <script src="http://127.0.0.1:8081/socket.io/socket.io.js"></script>
+
+    <script src="javascripts/jsRemoteUIClient.js"></script>
+    <script src="javascripts/jsRemoteUIBroadcastReceiver.js"></script>
+  </head>
+  <body>
+    <div class="scripts">
+      <script>
+        $(document).ready(function(){
+          window.app = new jsRemoteUIClient();
+        });
+      </script>
+    </div>
+  </body>
+</html>
