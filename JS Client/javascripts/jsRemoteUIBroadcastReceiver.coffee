@@ -1,7 +1,6 @@
-class @jsRemoteUIBroadcastReceiver
-  constructor: (_opts) ->
-    @options = _opts || {}
-    @socket = @options.socket
+class @jsRemoteUIBroadcastReceiver extends Backbone.Model
+  initialize: ->
+    @socket = @get('socket')
 
     @remotes = new Backbone.Collection();
 
@@ -10,11 +9,11 @@ class @jsRemoteUIBroadcastReceiver
       # and outgoing (client) host/port for OSC messages
       @socket.emit 'config',
         listen:
-          port: @options.port
+          port: @get('port')
           host: '127.0.0.1'
 
       # handler for incoming messages on the broadcasting port
-      @socket.on 'message-127.0.0.1:' + @options.port, (obj) =>
+      @socket.on 'message-127.0.0.1:' + @get('port'), (obj) =>
         # if message has the format of a ofxRemoteUIServer broadcast ping
         if obj.data && obj.info && obj.data[2] && obj.data[2]
           @parsePing
