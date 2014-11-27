@@ -1,27 +1,19 @@
 class @jsRemoteUIBroadcastReceiver extends Backbone.Model
   initialize: ->
     @socket = @get('socket')
-
     @remotes = new Backbone.Collection();
 
-    @socket.on 'connect', =>
-      # sends to socket.io server the incoming (server)
-      # and outgoing (client) host/port for OSC messages
-      @socket.emit 'config',
-        listen:
-          port: @get('port')
-          host: '127.0.0.1'
+    broadcastListener = new oscReceiver(socket: @socket, port: @get('port'), host: '127.0.0.1')
 
-      # handler for incoming messages on the broadcasting port
-      @socket.on 'message-127.0.0.1:' + @get('port'), (obj) =>
-        # if message has the format of a ofxRemoteUIServer broadcast ping
-        if obj.data && obj.info && obj.data[2] && obj.data[2]
-          @parsePing
-            ip: obj.info.address
-            port: obj.data[2][1]
-            computerName: obj.data[2][2]
-            binaryName: obj.data[2][3]
-            broadcastSequenceNumber: obj.data[2][4]
+    broadcastListener.on 'message', (obj) =>
+      # if message has the format of a ofxRemoteUIServer broadcast ping
+      if obj.data && obj.info && obj.data[2] && obj.data[2]
+        @parsePing
+          ip: obj.info.address
+          port: obj.data[2][1]
+          computerName: obj.data[2][2]
+          binaryName: obj.data[2][3]
+          broadcastSequenceNumber: obj.data[2][4]
 
   update: ->
 

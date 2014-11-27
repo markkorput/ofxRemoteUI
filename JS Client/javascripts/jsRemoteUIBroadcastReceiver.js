@@ -13,27 +13,25 @@
     }
 
     jsRemoteUIBroadcastReceiver.prototype.initialize = function() {
-      var _this = this;
+      var broadcastListener,
+        _this = this;
       this.socket = this.get('socket');
       this.remotes = new Backbone.Collection();
-      return this.socket.on('connect', function() {
-        _this.socket.emit('config', {
-          listen: {
-            port: _this.get('port'),
-            host: '127.0.0.1'
-          }
-        });
-        return _this.socket.on('message-127.0.0.1:' + _this.get('port'), function(obj) {
-          if (obj.data && obj.info && obj.data[2] && obj.data[2]) {
-            return _this.parsePing({
-              ip: obj.info.address,
-              port: obj.data[2][1],
-              computerName: obj.data[2][2],
-              binaryName: obj.data[2][3],
-              broadcastSequenceNumber: obj.data[2][4]
-            });
-          }
-        });
+      broadcastListener = new oscReceiver({
+        socket: this.socket,
+        port: this.get('port'),
+        host: '127.0.0.1'
+      });
+      return broadcastListener.on('message', function(obj) {
+        if (obj.data && obj.info && obj.data[2] && obj.data[2]) {
+          return _this.parsePing({
+            ip: obj.info.address,
+            port: obj.data[2][1],
+            computerName: obj.data[2][2],
+            binaryName: obj.data[2][3],
+            broadcastSequenceNumber: obj.data[2][4]
+          });
+        }
       });
     };
 

@@ -3,6 +3,7 @@ var osc = require('node-osc'),
 
 var oscServer, oscClient;
 var oscServers = [];
+var oscClients = [];
 
 io.sockets.on('connection', function (socket) {
   socket.on("config", function (obj) {
@@ -33,17 +34,27 @@ io.sockets.on('connection', function (socket) {
       // when receiving a message on this new server,
       // forward through our socket connection,
       // with message in the following format:
-      // message-<host>:<port>
+      // message-<id>
       // for example:
-      // message-127.0.0.1:123
+      // message-<c4>
       server.on('message', function(msg, rinfo) {
         // console.log(msg, rinfo);
-        socket.emit("message-" + obj.listen.host + ":" + obj.listen.port, {
+        socket.emit("message-" + obj.listen.id, {
           data: msg,
           info: rinfo
         });
       });  
     }  
+
+    // add sender (client) config
+    if(obj.sender){
+      client = new osc.Client(obj.sender.host, obj.sender.port)
+      oscClients.push(client)
+
+      socket.on("message-"+obj.sender.id, function(obj){
+        client.send(obj);
+      });
+    }
   });
 
   socket.on("message", function (obj) {

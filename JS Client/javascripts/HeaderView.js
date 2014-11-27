@@ -22,7 +22,7 @@
       var _this = this;
       this.$el.append('<select id="remotes"><option value="oi">-- no applications detected yet --</option></select>');
       return this.model.remotes.on("add", function(remote) {
-        _this.$el.find('select#remotes').append('<option value="' + remote.cid + '">' + remote.get('ip') + '</option>');
+        _this.$el.find('select#remotes').append('<option value="' + remote.cid + '">' + remote.get('binaryName') + ' @ ' + remote.get('computerName') + '</option>');
         return _this.$el.find('select#remotes option:first').text('-- ' + _this.model.remotes.length + ' application(s) detected --');
       });
     };
