@@ -15,6 +15,7 @@
     }
 
     jsRemoteUIClient.prototype.initialize = function() {
+      var _this = this;
       this.socket = io.connect('http://127.0.0.1', {
         port: 8081,
         rememberTransport: false
@@ -23,7 +24,12 @@
         socket: this.socket,
         port: 25748
       });
-      this.sessions = new Backbone.Collection();
+      this.sessions = new SessionsCollection();
+      this.broadcastReceiver.remotes.on("add", function(remote) {
+        if (_this.broadcastReceiver.remotes.length === 1) {
+          return _this.loadSession(remote);
+        }
+      });
       this.headerView = new HeaderView({
         model: this.broadcastReceiver
       });
@@ -42,7 +48,8 @@
 
     jsRemoteUIClient.prototype.loadSession = function(remote) {
       return this.sessions.add({
-        remote: remote
+        remote: remote,
+        socket: this.socket
       });
     };
 

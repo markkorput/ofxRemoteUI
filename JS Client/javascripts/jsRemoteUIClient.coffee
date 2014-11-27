@@ -8,7 +8,12 @@ class @jsRemoteUIClient extends Backbone.Model
       socket: @socket
       port: 25748 # 25748 is the default ofxRemoteUI broadcast port
 
-    @sessions = new Backbone.Collection()
+    @sessions = new SessionsCollection()
+
+    @broadcastReceiver.remotes.on "add", (remote) =>
+      # first / only remote? auto-load it
+      if @broadcastReceiver.remotes.length == 1
+        @loadSession(remote)
 
     # create header view , setup handlers and show header view on page
     @headerView = new HeaderView(model: @broadcastReceiver)
@@ -25,6 +30,6 @@ class @jsRemoteUIClient extends Backbone.Model
   draw: ->
 
   loadSession: (remote) =>
-    @sessions.add(remote: remote)
+    @sessions.add(remote: remote, socket: @socket)
 
 
