@@ -3,7 +3,10 @@ class @jsRemoteUIBroadcastReceiver extends Backbone.Model
     @socket = @get('socket')
     @remotes = new Backbone.Collection();
 
-    broadcastListener = new oscReceiver(socket: @socket, port: @get('port'), host: '127.0.0.1')
+    broadcastListener = new oscReceiver
+      socket: @socket
+      port: @get('port')
+      host: '127.0.0.1'
 
     broadcastListener.on 'message', (obj) =>
       # if message has the format of a ofxRemoteUIServer broadcast ping

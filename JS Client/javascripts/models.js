@@ -13,16 +13,25 @@
     }
 
     Session.prototype.initialize = function() {
+      var _this = this;
       this.sender = new oscSender({
         socket: this.get('socket'),
         host: this.get('remote').get('ip'),
         port: this.get('remote').get('port')
       });
+      this.listener = new oscReceiver({
+        socket: this.get('socket'),
+        port: this.get('remote').get('port') + 1,
+        host: this.get('remote').get('ip')
+      });
+      this.listener.on('message', function(incoming) {
+        return console.log("session incoming: ", incoming);
+      });
       return this.requestCompleteUpdate();
     };
 
     Session.prototype.requestCompleteUpdate = function() {
-      return this.sender.send('REQU');
+      return this.sender.send('REQU', '');
     };
 
     return Session;
