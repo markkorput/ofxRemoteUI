@@ -28,6 +28,6 @@ class @oscSender extends Backbone.Model
         port: @get('port')
         host: @get('host')
 
-  send: (obj) ->
-    @socket.emit 'message-'+@cid, obj
+  send: (msg, pars) ->
+    @socket.emit 'message-'+@cid, msg, pars
 

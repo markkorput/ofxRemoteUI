@@ -58,8 +58,8 @@
       });
     };
 
-    oscSender.prototype.send = function(obj) {
-      return this.socket.emit('message-' + this.cid, obj);
+    oscSender.prototype.send = function(msg, pars) {
+      return this.socket.emit('message-' + this.cid, msg, pars);
     };
 
     return oscSender;
