@@ -16,10 +16,10 @@ class @jsRemoteUIClient extends Backbone.Model
     @sessions = new SessionsCollection()
 
     # automatically start a new session with the first discovered remote
-    # @broadcastReceiver.remotes.on "add", (remote) =>
-    #   # first / only remote? auto-load it
-    #   if @broadcastReceiver.remotes.length == 1
-    #     @sessions.add(remote: remote, socket: @socket).connect()
+    @broadcastReceiver.remotes.on "add", (remote) =>
+      # first / only remote? auto-load it
+      if @broadcastReceiver.remotes.length == 1
+        @sessions.add(remote: remote, socket: @socket).connect()
 
     # create header view, which shows broadcaster activity
     # and gives the user an option to select remotes to start a session with

@@ -1,5 +1,6 @@
 class @SessionsListView extends Backbone.View
-  tagName: "main"
+  tagName: "div"
+  className: "sessions"
 
   initialize: ->
     @sessionViews = []
@@ -15,8 +16,12 @@ class @SessionsListView extends Backbone.View
       @sessionViews.push(sessionView)
 
 class @SessionView extends Backbone.View
-  tagName: "section"
+  tagName: "div"
+  className: "session"
 
   initialize: ->
     remote = @model.get('remote');
     @$el.append('<h1>'+remote.get('binaryName')+'@'+remote.get('computerName')+' ('+remote.get('ip')+')</h1>');
+
+    @groupsView = new GroupsListView(collection: @model.groups)
+    @$el.append(@groupsView.el)

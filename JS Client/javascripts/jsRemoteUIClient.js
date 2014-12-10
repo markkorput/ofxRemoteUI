@@ -23,6 +23,14 @@
         port: 25748
       });
       this.sessions = new SessionsCollection();
+      this.broadcastReceiver.remotes.on("add", function(remote) {
+        if (_this.broadcastReceiver.remotes.length === 1) {
+          return _this.sessions.add({
+            remote: remote,
+            socket: _this.socket
+          }).connect();
+        }
+      });
       this.headerView = new HeaderView({
         model: this.broadcastReceiver
       });

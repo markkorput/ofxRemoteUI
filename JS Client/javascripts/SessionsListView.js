@@ -12,7 +12,9 @@
       return _ref;
     }
 
-    SessionsListView.prototype.tagName = "main";
+    SessionsListView.prototype.tagName = "div";
+
+    SessionsListView.prototype.className = "sessions";
 
     SessionsListView.prototype.initialize = function() {
       var _this = this;
@@ -39,12 +41,18 @@
       return _ref1;
     }
 
-    SessionView.prototype.tagName = "section";
+    SessionView.prototype.tagName = "div";
+
+    SessionView.prototype.className = "session";
 
     SessionView.prototype.initialize = function() {
       var remote;
       remote = this.model.get('remote');
-      return this.$el.append('<h1>' + remote.get('binaryName') + '@' + remote.get('computerName') + ' (' + remote.get('ip') + ')</h1>');
+      this.$el.append('<h1>' + remote.get('binaryName') + '@' + remote.get('computerName') + ' (' + remote.get('ip') + ')</h1>');
+      this.groupsView = new GroupsListView({
+        collection: this.model.groups
+      });
+      return this.$el.append(this.groupsView.el);
     };
 
     return SessionView;
