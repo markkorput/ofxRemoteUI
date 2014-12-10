@@ -1,3 +1,11 @@
+#
+# listens to incoming broadcast messages
+# when broadcasting signals is received,
+# a new model is created in the @remotes member collection
+# other classes can use this collection
+# to do stuff with the known remotes
+#
+
 class @jsRemoteUIBroadcastReceiver extends Backbone.Model
   initialize: ->
     @socket = @get('socket')

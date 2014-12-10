@@ -19,13 +19,6 @@
       this.sessionViews = [];
       return this.collection.on('add', function(session) {
         var sessionView;
-        _this.collection.each(function(other_session) {
-          if (other_session !== session) {
-            return other_session.set({
-              active: false
-            });
-          }
-        });
         sessionView = new SessionView({
           model: session
         });
@@ -49,7 +42,9 @@
     SessionView.prototype.tagName = "section";
 
     SessionView.prototype.initialize = function() {
-      return this.$el.append('<h1>' + this.model.get('remote').get('ip') + '</h1>');
+      var remote;
+      remote = this.model.get('remote');
+      return this.$el.append('<h1>' + remote.get('binaryName') + '@' + remote.get('computerName') + ' (' + remote.get('ip') + ')</h1>');
     };
 
     return SessionView;

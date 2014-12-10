@@ -12,7 +12,9 @@
       return _ref;
     }
 
-    Session.prototype.initialize = function() {
+    Session.prototype.initialize = function() {};
+
+    Session.prototype.connect = function() {
       var _this = this;
       this.sender = new oscSender({
         socket: this.get('socket'),
@@ -31,6 +33,7 @@
     };
 
     Session.prototype.requestCompleteUpdate = function() {
+      console.log("sending REQU");
       return this.sender.send('REQU', '');
     };
 
@@ -47,6 +50,11 @@
     }
 
     SessionsCollection.prototype.model = Session;
+
+    SessionsCollection.prototype.initialize = function() {
+      var _this = this;
+      return this.on('add', function(session) {});
+    };
 
     return SessionsCollection;
 

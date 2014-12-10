@@ -5,11 +5,6 @@ class @SessionsListView extends Backbone.View
     @sessionViews = []
 
     @collection.on 'add', (session) =>
-      # close all existing sessions
-      @collection.each (other_session) ->
-        if other_session != session
-          other_session.set(active: false)
-
       # create new session view
       sessionView = new SessionView(model: session)
 
@@ -23,4 +18,5 @@ class @SessionView extends Backbone.View
   tagName: "section"
 
   initialize: ->
-    @$el.append('<h1>'+@model.get('remote').get('ip')+'</h1>');
+    remote = @model.get('remote');
+    @$el.append('<h1>'+remote.get('binaryName')+'@'+remote.get('computerName')+' ('+remote.get('ip')+')</h1>');
